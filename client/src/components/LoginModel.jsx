@@ -1,6 +1,17 @@
 import React from 'react'
 import {AnimatePresence, motion} from "motion/react"
+import { signInWithPopup } from 'firebase/auth'
+import { provider } from '../firebase'
 function LoginModel({open,onClose}) {
+
+    const handleGoogleAuth=async ()=>{
+        try {
+            const result=await signInWithPopup(auth,provider)
+            console.log(result)
+        } catch (error) {
+            console.log(error)
+        }
+    }
   return (
     <AnimatePresence>
     {open && 
@@ -59,6 +70,26 @@ function LoginModel({open,onClose}) {
                     </div>
                     
                 </motion.button>
+
+                <div className='flex items-center gap-4 my-10'>
+                    <div className='h-px flex-1 bg-white/10'/>
+                        <span className='text-xs text-zinc-500 tracking-wide'>Secure Login</span>
+                    <div className='h-px flex-1 bg-white/10'/>
+
+                </div>
+
+                <p className='text-xs text-zinc-500 leading-relaxed'>
+                    By continuing, you agree to our{" "}
+                    <span className='underline cursor-pointer hover:text-zinc-300'>
+                        Terms of Service
+                    </span>{" "} 
+                    and {" "}
+                    <span className='underline cursor-pointer hover:text-zinc-300'>
+                        Privacy Policy
+                    </span>
+                </p>
+
+
              </div>
 
 
