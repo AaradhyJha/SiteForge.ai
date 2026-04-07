@@ -17,7 +17,7 @@ function LoginModel({open,onClose}) {
             animate={{ scale: 0.88, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 40 }}
             transition={{duration: 0.45, ease: "easeOut" }}
-            className='relative w-full max-w-md p-[1px] rounded-3xl bg-gradient-to-br from-purple-500/40 via-blue-500/30 to-transparent'
+            className='relative w-full max-w-md p-px rounded-3xl bg-linear-to-br from-purple-500/40 via-blue-500/30 to-transparent'
             onClick={(e)=>e.stopPropagation()}
         >
             <div className='relative rounded-3xl bg-[#0b0b0b] border border-white/10 shadow[0_30px_120px_rgba(0,0,0,0.8)] overflow-hidden'>
