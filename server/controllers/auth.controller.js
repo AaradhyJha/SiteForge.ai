@@ -23,6 +23,7 @@ export const googleAuth = async (req,res) => { try {
 
     return res.status(200).json(user)
 } catch (error) {
+    console.log(error)
     return res.status(500).json({message:`google auth error ${error}`})
 }
 }
@@ -30,11 +31,13 @@ export const googleAuth = async (req,res) => { try {
 
 export const logOut=async (req,res) => {
     try {
-        return res.clearCookie("token",{
+        res.clearCookie("token",{
         httpOnly:true,
         secure:false,
         sameSite:"strict",
     })
+
+    return res.status(200).json({message:"log out successfully"})
     } catch (error) {
         return res.status(500).json({message:`log out error ${error}`})
     }

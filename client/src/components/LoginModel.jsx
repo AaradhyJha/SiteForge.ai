@@ -1,13 +1,23 @@
 import React from 'react'
 import {AnimatePresence, motion} from "motion/react"
 import { signInWithPopup } from 'firebase/auth'
-import { provider } from '../firebase'
+import { auth, provider } from '../firebase'
+import axios from 'axios'
+import { serverUrl } from '../App'
+import { useDispatch } from 'react-redux'
+import { setUserData } from '../redux/userSlice'
 function LoginModel({open,onClose}) {
-
+const dispatch=useDispatch()
     const handleGoogleAuth=async ()=>{
         try {
             const result=await signInWithPopup(auth,provider)
-            console.log(result)
+            const {data}=await axios.post(`${serverUrl}/api/auth/google`,{
+                name:result.user.displayName,
+                email:result.user.email,
+                avatar:result.user.photoURL
+            },{withCredentials:true})
+            dispatch(setUserData(data))
+            onClose()
         } catch (error) {
             console.log(error)
         }
@@ -55,12 +65,13 @@ function LoginModel({open,onClose}) {
                 <h1 className='inline-block mb-6 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-zinc-300'> AI-powered website builder </h1>
                 <h2 className='text-3xl font-semibold leading-tight mb-3 space-x-2'>
                  <span>Welcome to</span>
-                 <span className='bg-linear-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent'>GenWeb.ai</span>
+                 <span className='bg-linear-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent'>SiteForge.ai</span>
                 </h2>
 
                 <motion.button
                 whileHover={ {scale: 1.04}}
                 whileTap={{scale:0.96}}
+                onClick={handleGoogleAuth}
                 className='group relative w-full h-13 rounded-xl bg-white text-black font-semibold shadow-xl overflow-hidden'
                 >
             
