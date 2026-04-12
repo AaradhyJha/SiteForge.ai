@@ -1,12 +1,13 @@
 import express from "express"
-import { generatedemo, getCurrentUser } from "../controllers/user.controller.js"
+
 import isAuth from "../middlewares/isAuth.js"
+import { generateWebsite } from "../controllers/website.controllers.js"
 
 
 
-const userRouter=express.Router()
+const websiteRouter=express.Router()
 
-userRouter.get("/me",isAuth,getCurrentUser)
-userRouter.get("/gen",generatedemo)    
+websiteRouter.post("/generate",isAuth,generateWebsite)
+   
 
-export default userRouter
+export default websiteRouter
