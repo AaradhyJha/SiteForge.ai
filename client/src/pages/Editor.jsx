@@ -53,15 +53,33 @@ function Editor() {
   function Header() {
     return(
         <div className='h-14 px-4 flex items-center justify-between border-b border-white/10'>
-            <span>{website.title}</span>
+            <span className='font-semibold truncate'>{website.title}</span>
         </div>
     )
 }
 
 function Chat() {
     return(
-        <div>
-            
+        <div className='flex-1 overflow-y-auto px-4 py-4 space-y-4'>
+            {website.conversation.map((m,i)=>(
+                <div
+                key={i}
+                className={`max-w-[85%] ${
+                    m.role === "user" ? "ml-auto" : "mr-auto"
+                }`}
+                >
+                    <div
+                    className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
+                        m.role === "user"
+                        ? "bg-white text-black"
+                        : "bg-white/5 border border-white/10 text-zinc-200"
+                    }`}
+                    >
+                        {m.content}
+                    </div>
+                    
+                </div>
+            ))}
         </div>
     )
 }
