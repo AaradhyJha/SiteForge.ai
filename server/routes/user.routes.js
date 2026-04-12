@@ -1,5 +1,5 @@
 import express from "express"
-import { generatedemo, getCurrentUser } from "../controllers/user.controller.js"
+import { getCurrentUser } from "../controllers/user.controller.js"
 import isAuth from "../middlewares/isAuth.js"
 
 

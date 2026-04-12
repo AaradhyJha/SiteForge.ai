@@ -40,8 +40,7 @@ const websiteSchema=new mongoose.Schema({
     },
     slug:{
         type:String,
-        unique:true,
-        required:true
+        unique:true
     }
 
 },{timestamps:true})
