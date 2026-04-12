@@ -158,7 +158,7 @@ export const generateWebsite=async (req,res) => {
             return res.status(400).json({message:"prompt is required"})
         }
         const user=await User.findById(req.user._id)
-        console.log(user)
+        
         if(!user){
              return res.status(400).json({message:"user not found"})
         }
@@ -177,8 +177,7 @@ export const generateWebsite=async (req,res) => {
             raw=await generateResponse(finalPrompt + "\n\nRETURN ONLY RAW JSON.")
             parsed=await extractJson(raw)
           }
-          console.log(raw)
-          console.log(parsed)
+         
         }
 
         if(!parsed.code){
