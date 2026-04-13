@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { serverUrl } from '../App'
@@ -9,6 +9,7 @@ function Editor() {
     const {id}=useParams()
     const [website,setWebsite]=useState(null)
     const [error,setError]=useState("")
+    const iframeRef=useRef(null)
 
     useEffect(()=>{
         console.log("ID:", id)
@@ -24,6 +25,14 @@ function Editor() {
         }
         handleGetWebsite()
     },[id])
+
+    useEffect(()=>{
+      if(!iframeRef.current || !website.latestCode)return;
+      const blob=new Blob([website.latestCode],{type:"text/html"})
+      const url=URL.createObjectURL(blob)
+      iframeRef.current.src=url
+      return()=>URL.revokeObjectURL(url)
+    },[website.latestCode])
 
   if(error){
     return (
@@ -59,6 +68,8 @@ function Editor() {
                 </div>
                 
             </div>
+
+            <iframe ref={iframeRef} className='flex-1 w-full bg-white'/>
         </div>
 
 
