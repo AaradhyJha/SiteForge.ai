@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { serverUrl } from '../App'
+import { Code, Code2, Monitor, Rocket } from 'lucide-react'
 
 function Editor() {
     const {id}=useParams()
@@ -47,6 +48,22 @@ function Editor() {
 <Header/>
 <Chat/>
         </aside>
+
+        <div className='flex-1 flex flex-col'>
+            <div className='h-14 px-4 flex justify-between items-center border-b border-white/10 bg-black/80'>
+                <span className='text-xs text-zinc-400'>Live Preview</span>
+                <div className='flex gap-2'>
+                    <button className='flex items-center gap-2 px-4 py-1.5 rounded-lg bg-linear-to-r from-indigo-500 to-purple-500 text-sm font-semibold hover:scale-105 transition' ><Rocket size={14}/>Deploy</button>
+                <button className='p-2'><Code2 size={18}/></button>
+                <button className='p-2'><Monitor size={18}/></button>
+                </div>
+                
+            </div>
+        </div>
+
+
+
+
 
     </div>
   )
