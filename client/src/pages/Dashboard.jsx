@@ -3,9 +3,35 @@ import React from 'react'
 import {motion} from "motion/react"
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'      
+import { useEffect } from 'react'
+import axios from 'axios'
+import { serverUrl } from '../App'
+import { useState } from 'react'
+
 function Dashboard() {
     const {userData}=useSelector(state=>state.user)
     const navigate=useNavigate()
+    const [websites,setWebsites]=useState(null)
+    const [loading,setLoading]=useState(false)
+    const [error,setError]=useState("")
+    useEffect(()=>{
+       const handleGetAllWebsites=async () => {
+        setLoading(true)
+        try {
+            const result=await axios.get(`${serverUrl}/api/website/get-all`,{withCredentials:true})
+            setWebsites(result.data || [])
+            setLoading(false)
+        } catch (error) {
+            console.log(error)
+            setError(error.response.data.message)
+            setLoading(false)
+        }
+       }
+       handleGetAllWebsites()
+    },[])
+
+
+
   return (
     <div className='min-h-screen bg-[#050505] text-white'>
         <div className='sticky top-0 z-40 backdrop-blur-xl bg-black/50 border-b border-white/10'>
@@ -28,6 +54,30 @@ function Dashboard() {
                 <p className='text-sm text-zinc-400 mb-1'>Welcome Back</p>
                 <h1 className='text-3xl font-bold'>{userData.name}</h1>
             </motion.div>
+
+{loading && (
+    <div className='mt-24 text-center text-zinc-400'>Loading Your Websites...</div>
+)}
+
+{error && !loading && (
+    <div className='mt-24 text-center text-red-400'>{error}</div>
+)}
+
+{websites.length==0 && (
+    <div className='mt-24 text-center text-zinc-400'>You don't have any websites</div>
+)}
+
+{!loading && !error && websites.length>0 && (
+    <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8'>
+      {websites.map((w,i)=>(
+        <motion.div className=''>
+
+        </motion.div>
+      ))}
+    </div>
+)}
+
+
         </div>
     </div>
   )
