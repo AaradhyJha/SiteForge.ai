@@ -17,7 +17,7 @@ function Editor() {
     const handleUpdate=async () => {
         setMessages((m)=>[...m,{role:"user",content:prompt}])
         try {
-            const result=await axios(`${serverUrl}/api/website/update/${id}`,{prompt},{withCredentials:true})
+            const result=await axios.post(`${serverUrl}/api/website/update/${id}`,{prompt},{withCredentials:true})
             console.log(result)
             setMessages((m)=>[...m,{role:"ai",content:result.data.message}])
             setCode(result.data.code)
@@ -49,7 +49,7 @@ function Editor() {
       const url=URL.createObjectURL(blob)
       iframeRef.current.src=url
       return()=>URL.revokeObjectURL(url)
-    },[website?.latestCode])
+    },[code])
 
   if(error){
     return (
@@ -72,7 +72,39 @@ function Editor() {
     <div className='h-screen w-screen flex bg-black text-white overflow-hidden'>
         <aside className='hidden lg:flex w-[380px] flex-col border-r border-white/10 bg-black/80'>
 <Header/>
-<Chat/>
+<>
+        <div className='flex-1 overflow-y-auto px-4 py-4 space-y-4'>
+            {messages.map((m,i)=>(
+                <div
+                key={i}
+                className={`max-w-[85%] ${
+                    m.role === "user" ? "ml-auto" : "mr-auto"
+                }`}
+                >
+                    <div
+                    className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
+                        m.role === "user"
+                        ? "bg-white text-black"
+                        : "bg-white/5 border border-white/10 text-zinc-200"
+                    }`}
+                    >
+                        {m.content}
+                    </div>
+                    
+                </div>
+            ))}
+
+           
+
+
+        </div>
+        <div className='p-3 border-t border-white/10'>
+               <div className='flex gap-2'>
+                  <input placeholder='Describe Changes...' className='flex-1 resize-none rounded-2xl px-4 py-3 bg-white/5 border border-white/10 text-sm outline-none' onChange={(e)=>setPrompt(e.target.value)} value={prompt}/>
+                  <button className='px-4 py-3 rounded-2xl bg-white text-black' onClick={handleUpdate}><Send size={14}/></button>
+               </div>
+           </div>
+        </>
         </aside>
 
         <div className='flex-1 flex flex-col'>
@@ -103,44 +135,7 @@ function Editor() {
     )
 }
 
-function Chat() {
-    return(
-        <>
-        <div className='flex-1 overflow-y-auto px-4 py-4 space-y-4'>
-            {messages.map((m,i)=>(
-                <div
-                key={i}
-                className={`max-w-[85%] ${
-                    m.role === "user" ? "ml-auto" : "mr-auto"
-                }`}
-                >
-                    <div
-                    className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
-                        m.role === "user"
-                        ? "bg-white text-black"
-                        : "bg-white/5 border border-white/10 text-zinc-200"
-                    }`}
-                    >
-                        {m.content}
-                    </div>
-                    
-                </div>
-            ))}
 
-           
-
-
-        </div>
-        <div className='p-3 border-t border-white/10'>
-               <div className='flex gap-2'>
-                  <textarea row="1" placeholder='Describe Changes...' className='flex-1 resize-none rounded-2xl px-4 py-3 bg-white/5 border border-white/10 text-sm outline-none' onChange={(e)=>setPrompt(e.target.value)} value={prompt}></textarea>
-                  <button className='px-4 py-3 rounded-2xl bg-white text-black'><Send size={14}/></button>
-               </div>
-           </div>
-        </>
-        
-    )
-}
 }
 
 
