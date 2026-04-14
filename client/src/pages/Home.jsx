@@ -19,7 +19,7 @@ function Home() {
     const { userData } = useSelector((state) => state.user);
     const [openProfile, setOpenProfile] = useState(false);
     const dispatch = useDispatch()
-    const navigate=useNavigate()
+    const navigate = useNavigate()
     const handleLogOut = async () => {
         console.log("logout click")
         try {
@@ -75,7 +75,7 @@ function Home() {
                                             e.target.onerror = null; // prevent infinite loop
                                             e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name)}&background=random`;
                                         }}
-                                        alt=""
+                                        alt="" referrerPolicy="no-referrer"
                                         className="w-9 h-9 rounded-full border border-white/20 object-cover"
                                     />
                                 </button>
@@ -104,7 +104,7 @@ function Home() {
                                                     <span className="font-semibold">+</span>
                                                 </button>
 
-                                                <button className="w-full px-4 py-3 text-left text-sm hover:bg-white/5" onClick={()=>navigate("/dashboard")}>
+                                                <button className="w-full px-4 py-3 text-left text-sm hover:bg-white/5" onClick={() => navigate("/dashboard")}>
                                                     Dashboard
                                                 </button>
                                                 <button className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-white/5" onClick={handleLogOut}>
@@ -141,8 +141,8 @@ function Home() {
                     production-ready website.
                 </motion.p>
 
-                <button className="px-10 py-4 rounded-xl bg-white text-black font-semibold hover:scale-105 transition mt-12" onClick={()=>navigate("/dashboard")}>
-                    {userData?"Go to dashboard":"Get Started"}
+                <button className="px-10 py-4 rounded-xl bg-white text-black font-semibold hover:scale-105 transition mt-12" onClick={() => navigate("/dashboard")}>
+                    {userData ? "Go to dashboard" : "Get Started"}
                 </button>
             </section>
 
