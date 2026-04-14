@@ -9,7 +9,22 @@ function Editor() {
     const {id}=useParams()
     const [website,setWebsite]=useState(null)
     const [error,setError]=useState("")
+    const [code,setCode]=useState("")
+    const [messages,setMessages]=useState([])
+    const [prompt,setPrompt]=useState("")
     const iframeRef=useRef(null)
+
+    const handleUpdate=async () => {
+        setMessages((m)=>[...m,{role:"user",content:prompt}])
+        try {
+            const result=await axios(`${serverUrl}/api/website/update/${id}`,{prompt},{withCredentials:true})
+            console.log(result)
+            setMessages((m)=>[...m,{role:"ai",content:result.data.message}])
+            setCode(result.data.code)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     useEffect(()=>{
         console.log("ID:", id)
@@ -18,6 +33,8 @@ function Editor() {
             try {
                 const result=await axios.get(`${serverUrl}/api/website/get-by-id/${id}`,{withCredentials:true})
                 setWebsite(result.data)
+                setCode(result.data.latestCode)
+                setMessages(result.data.conversation)
             } catch (error) {
                 console.log(error)
                 setError(error.response.data.message)                
@@ -27,8 +44,8 @@ function Editor() {
     },[id])
 
     useEffect(()=>{
-      if(!iframeRef.current || !website?.latestCode)return;
-      const blob=new Blob([website?.latestCode],{type:"text/html"})
+      if(!iframeRef.current || !code)return;
+      const blob=new Blob([code],{type:"text/html"})
       const url=URL.createObjectURL(blob)
       iframeRef.current.src=url
       return()=>URL.revokeObjectURL(url)
@@ -90,7 +107,7 @@ function Chat() {
     return(
         <>
         <div className='flex-1 overflow-y-auto px-4 py-4 space-y-4'>
-            {website.conversation.map((m,i)=>(
+            {messages.map((m,i)=>(
                 <div
                 key={i}
                 className={`max-w-[85%] ${
@@ -116,7 +133,7 @@ function Chat() {
         </div>
         <div className='p-3 border-t border-white/10'>
                <div className='flex gap-2'>
-                  <textarea row="1" placeholder='Describe Changes...' className='flex-1 resize-none rounded-2xl px-4 py-3 bg-white/5 border border-white/10 text-sm outline-none'></textarea>
+                  <textarea row="1" placeholder='Describe Changes...' className='flex-1 resize-none rounded-2xl px-4 py-3 bg-white/5 border border-white/10 text-sm outline-none' onChange={(e)=>setPrompt(e.target.value)} value={prompt}></textarea>
                   <button className='px-4 py-3 rounded-2xl bg-white text-black'><Send size={14}/></button>
                </div>
            </div>
