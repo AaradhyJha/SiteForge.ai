@@ -70,7 +70,14 @@ function Dashboard() {
 {!loading && !error && websites.length>0 && (
     <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8'>
       {websites.map((w,i)=>(
-        <motion.div className=''>
+        <motion.div
+        key={i}
+            initial={{opacity:0, y:20}}
+            animate={{opacity:1, y:0}}
+            transition={{delay:i*0.05}}
+            whileHover={{y:-6}}
+            className='rounded-2xl bg-white/5 border border-white/10 overflow-hidden hover:bg-white/10 transition flex flex-col'
+            >
 
         </motion.div>
       ))}
