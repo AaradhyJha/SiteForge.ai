@@ -18,6 +18,7 @@ function App() {
         <Route path='/dashboard' element={userData?<Dashboard/>:<Home/>}/>
         <Route path='/generate' element={userData?<Generate/>:<Home/>}/>
         <Route path='/editor/:id' element={userData?<WebsiteEditor/>:<Home/>}/>
+        <Route path='/site/:id' element={<LiveSite/>}/>
       </Routes>
     </BrowserRouter>
   )
