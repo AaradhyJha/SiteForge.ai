@@ -190,14 +190,15 @@ export const generateWebsite = async (req, res) => {
       title: prompt.slice(0, 60),
       latestCode: parsed.code,
       conversation: [
+         {
+          role: "user",
+          content: prompt
+        },
         {
           role: "ai",
           content: parsed.message
-        },
-        {
-          role: "user",
-          content: prompt
         }
+       
       ]
 
     })
