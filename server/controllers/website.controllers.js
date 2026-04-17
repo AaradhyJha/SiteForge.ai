@@ -352,3 +352,21 @@ export const deploy=async (req,res) => {
     return res.status(500).json({ message: `website deployment error ${error}` })
   }
 }
+
+export const getWebsiteBySlug=async (req,res) => {
+  try {
+    const website = await Website.findOne({
+      slug: req.params.slug,
+      user: req.user._id
+    })
+
+    if (!website) {
+      return res.status(400).json({ message: "website not found" })
+    }
+      return res.status(200).json(website)
+  } catch (error) {
+    return res.status(500).json({ message: `get website by slug error ${error}` })
+  }
+}
+  
+    

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { serverUrl } from '../App'
 import axios from 'axios'
-import { set } from 'mongoose'
+import { useState } from 'react'
 
 function LiveSite() {
     const { id } = useParams()
@@ -13,7 +13,7 @@ function LiveSite() {
         console.log("serverUrl:", serverUrl)
         const handleGetWebsite = async () => {
             try {
-                const result = await axios.get(`${serverUrl}/api/website/get-by-id/${id}`, { withCredentials: true })
+                const result = await axios.get(`${serverUrl}/api/website/get-by-slug/${id}`, { withCredentials: true })
                 setHtml(result.data.latestCode)
             } catch (error) {
                 console.log(error)

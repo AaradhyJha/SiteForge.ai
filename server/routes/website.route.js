@@ -1,7 +1,7 @@
 import express from "express"
 
 import isAuth from "../middlewares/isAuth.js"
-import { changes, generateWebsite, getAll, getWebsiteById } from "../controllers/website.controllers.js"
+import { changes, generateWebsite, getAll, getWebsiteById, deploy, getWebsiteBySlug } from "../controllers/website.controllers.js"
 
 
 
@@ -11,6 +11,7 @@ websiteRouter.post("/generate",isAuth,generateWebsite)
 websiteRouter.post("/update/:id",isAuth,changes)
 websiteRouter.get("/get-by-id/:id",isAuth,getWebsiteById)
 websiteRouter.get("/get-all",isAuth,getAll)
-websiteRouter.get("/deploy",isAuth,deploy)
+websiteRouter.get("/deploy/:id",isAuth,deploy)
+websiteRouter.get("/get-by-slug/:slug",isAuth,getWebsiteBySlug)
 
 export default websiteRouter

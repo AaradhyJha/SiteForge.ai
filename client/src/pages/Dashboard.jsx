@@ -1,4 +1,4 @@
-import { ArrowLeft, Rocket, Share2 } from 'lucide-react'
+import { ArrowLeft, Check, Rocket, Share2 } from 'lucide-react'
 import React from 'react'
 import { motion } from "motion/react"
 import { useSelector } from 'react-redux'
@@ -14,6 +14,7 @@ function Dashboard() {
     const [websites, setWebsites] = useState(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
+    const [copiedId, setCopiedId] = useState(null)
 
     const handleDeploy = async (id) => {
         try {
@@ -40,7 +41,13 @@ function Dashboard() {
         handleGetAllWebsites()
     }, [])
 
-
+    const handleCopy = async (site) => {
+        await navigator.clipboard.writeText(site.deployUrl)
+        setCopiedId(site._id)
+        setTimeout(() => {
+            setCopiedId(null)
+        }, 2000)
+    }
 
     return (
         <div className='min-h-screen bg-[#050505] text-white'>
@@ -79,8 +86,12 @@ function Dashboard() {
 
                 {!loading && !error && websites?.length > 0 && (
                     <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8'>
-                        {websites.map((w, i) => (
-                            <motion.div
+                        {websites.map((w, i) => {
+
+                            const copied = copiedId === w._id
+
+
+                            return <motion.div
                                 key={i}
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -101,17 +112,39 @@ function Dashboard() {
                                     </p>
 
 
-                                    {!w.deployed ?(
+                                    {!w.deployed ? (
                                         <button className='mt-auto flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-linear-to-r from-indigo-500 to-purple-500 hover:scale-105 transition'
 
-                                        onClick={() => handleDeploy(w._id)}
-                                        
-                                        ><Rocket size={18}/>Deploy</button>
-                                    ):(<button><Share2/>Share Link</button>)}
+                                            onClick={() => handleDeploy(w._id)}
+
+                                        ><Rocket size={18} />Deploy</button>
+                                    ) : (<motion.button
+                                        whileTap={{ scale: 0.95 }}
+                                        onClick={() => handleCopy(w)}
+                                        className={`mt-auto flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${copied
+                                            ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                                            : "bg-white/10 hover:bg-white/20 border border-white/10"
+                                            }`}
+                                    >
+
+
+                                        { copied?(
+                                            <>
+                                            <Check size={14}/>
+                                            Link Copied
+                                            </>
+                                        ):
+                                        <>
+                                        <Share2 size={14}/>
+                                        Share Link
+                                        </>
+                                        }
+
+                                    </motion.button>)}
                                 </div>
 
                             </motion.div>
-                        ))}
+                        })}
                     </div>
                 )}
 
