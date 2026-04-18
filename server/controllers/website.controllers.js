@@ -344,10 +344,6 @@ export const deploy = async (req, res) => {
     website.deployUrl = `${process.env.CLIENT_URL}/site/${website.slug}`
     await website.save()
 
-    console.log("CLIENT_URL:", process.env.CLIENT_URL)
-    console.log("slug:", website.slug)
-    console.log("deployUrl:", website.deployUrl)
-
     return res.status(200).json({
       deployUrl: website.deployUrl
     })
