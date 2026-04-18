@@ -19,7 +19,15 @@ function Dashboard() {
     const handleDeploy = async (id) => {
         try {
             const result = await axios.get(`${serverUrl}/api/website/deploy/${id}`, { withCredentials: true })
+            console.log(result.data)
             window.open(`${result.data.deployUrl}`, "_blank")
+            setWebsites((prev) => 
+            prev.map((w) => 
+                w._id === id
+             ? { ...w, deployed: true, deployUrl: result.data.deployUrl } 
+             : w
+            )
+        )
         } catch (error) {
             console.error("Error deploying website:", error)
         }

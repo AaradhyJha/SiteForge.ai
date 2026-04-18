@@ -6,7 +6,7 @@ import { Coins } from "lucide-react";
 import axios from "axios";
 import { serverUrl } from "../App";
 import { setUserData } from "../redux/userSlice";
-import { useNavigate, useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 function Home() {
 
     const highlights = [

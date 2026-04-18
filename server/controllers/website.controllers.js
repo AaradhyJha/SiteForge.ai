@@ -190,7 +190,7 @@ export const generateWebsite = async (req, res) => {
       title: prompt.slice(0, 60),
       latestCode: parsed.code,
       conversation: [
-         {
+        {
           role: "user",
           content: prompt
         },
@@ -198,7 +198,7 @@ export const generateWebsite = async (req, res) => {
           role: "ai",
           content: parsed.message
         }
-       
+
       ]
 
     })
@@ -304,30 +304,30 @@ export const changes = async (req, res) => {
     await user.save()
 
     return res.status(200).json({
-      message:parsed.message,
-      code:parsed.code,
+      message: parsed.message,
+      code: parsed.code,
       remainingCredits: user.credits
     })
 
   } catch (error) {
     console.log(error)
-return res.status(500).json({ message: `website updation error ${error}` })
+    return res.status(500).json({ message: `website updation error ${error}` })
   }
 }
 
 
-export const getAll=async (req,res) => {
+export const getAll = async (req, res) => {
   try {
-    const websites=await Website.find({user:req.user._id})
+    const websites = await Website.find({ user: req.user._id })
     return res.status(200).json(websites)
   } catch (error) {
     return res.status(500).json({ message: `get all websites error ${error}` })
   }
 }
 
-export const deploy=async (req,res) => {
+export const deploy = async (req, res) => {
   try {
-      const website = await Website.findOne({
+    const website = await Website.findOne({
       _id: req.params.id,
       user: req.user._id
     })
@@ -336,16 +336,20 @@ export const deploy=async (req,res) => {
       return res.status(400).json({ message: "website not found" })
     }
 
-    if(!website.slug){
-      website.slug=website.title.toLowerCase().replace(/[^a-z0-9]+/g, "").slice(0,60) + website._id.toString().slice(-5)
+    if (!website.slug) {
+      website.slug = website.title.toLowerCase().replace(/[^a-z0-9]+/g, "").slice(0, 60) + website._id.toString().slice(-5)
     }
 
-    website.deployed=true
-    website.deployUrl=`${process.env.CLIENT_URL}/site/${website.slug}`
+    website.deployed = true
+    website.deployUrl = `${process.env.CLIENT_URL}/site/${website.slug}`
     await website.save()
 
+    console.log("CLIENT_URL:", process.env.CLIENT_URL)
+    console.log("slug:", website.slug)
+    console.log("deployUrl:", website.deployUrl)
+
     return res.status(200).json({
-      url: website.deployUrl
+      deployUrl: website.deployUrl
     })
 
   } catch (error) {
@@ -353,7 +357,7 @@ export const deploy=async (req,res) => {
   }
 }
 
-export const getWebsiteBySlug=async (req,res) => {
+export const getWebsiteBySlug = async (req, res) => {
   try {
     const website = await Website.findOne({
       slug: req.params.slug,
@@ -363,10 +367,9 @@ export const getWebsiteBySlug=async (req,res) => {
     if (!website) {
       return res.status(400).json({ message: "website not found" })
     }
-      return res.status(200).json(website)
+    return res.status(200).json(website)
   } catch (error) {
     return res.status(500).json({ message: `get website by slug error ${error}` })
   }
 }
-  
-    
+
