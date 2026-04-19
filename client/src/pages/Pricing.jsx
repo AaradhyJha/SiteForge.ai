@@ -34,7 +34,7 @@ const plans = [
       "Unlimited edits per website",
       "Priority generation speed",
       "Deploy & share websites",
-      "Email support",
+      
     ],
     popular: true,
     button: "Upgrade to Pro",
@@ -53,7 +53,6 @@ const plans = [
       "Unlimited edits per website",
       "Fastest generation speed",
       "Deploy & share websites",
-      "Custom slug/domain support",
       "Dedicated support",
       "Early access to new features",
     ],
@@ -93,7 +92,7 @@ function Pricing() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.12 }}
             whileHover={{ y: -14, scale: 1.03 }}
-            className={`relative rounded-3xl p-8 border backdrop-blur-xl transition-all
+            className={`relative rounded-3xl p-8 border backdrop-blur-xl transition-all flex flex-col
             ${p.popular
                 ? "border-indigo-500 bg-linear-to-b from-indigo-500/20 to-transparent shadow-2xl shadow-indigo-500/30"
                 : "border-white/10 bg-white/5 hover:border-indigo-400 hover:bg-white/10"
@@ -129,13 +128,13 @@ function Pricing() {
 
             <motion.button
             whileTap={{scale:0.96}}
-            className={`w-full py-3 rounded-xl font-semibold transition 
+            className={`w-full py-3 rounded-xl font-semibold transition mt-auto
               ${p.popular
                 ? "bg-indigo-500 hover:bg-indigo-600"
                 : "bg-white/10 hover:bg-white/20"
               } disabled:opacity-60`}
             >
-
+{p.button}
             </motion.button>
 
 
