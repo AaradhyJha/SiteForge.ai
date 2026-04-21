@@ -67,7 +67,7 @@ const plans = [
 function Pricing() {
   const navigate = useNavigate()
   const {userData}=useSelector(state=>state.user)
-  const [loading,setLoading]=useState(false)
+  const [loading,setLoading]=useState(null)
   const handleBuy=async (planKey) => {
     if(!userData){
       navigate("/")
@@ -77,13 +77,13 @@ if(planKey=="free"){
   navigate("/dashboard")
   return
 }
-setLoading(true)
+setLoading(planKey)
 try {
   const result=await axios.post(`${serverUrl}/api/billing`,{planType:planKey},{withCredentials:true})
   window.location.href=result.data.sessionUrl
 } catch (error) {
   console.log(error)
-  setLoading(false)
+  setLoading(null)
 }
 
   }
