@@ -9,7 +9,7 @@ export const billing=async (req,res) => {
         if(!plan || plan.price==0){
             return res.status(400).json({message:"invalid paid plan"})
         }
-        const session=stripe.checkout.sessions.create({
+        const session=await stripe.checkout.sessions.create({
             mode:"payment",
             payment_method_types:["card"],
             line_items:[
@@ -17,13 +17,30 @@ export const billing=async (req,res) => {
                     price_data:{
                         currency:"inr",
                         product_data:{
-                            name:`SiteForge.ai ${plantType.toUpperCase()}`
-                        }
-                    }
+                            name:`SiteForge.ai ${plantType.toUpperCase()} plan`
+                        },
+                        unit_amount:plan.price*100
+                    },
+                    quantity:1
                 }
-            ]
+            ],
+
+            metadata:{
+                userId,
+                credits:plan.credits,
+                plan:plan.plan
+            },
+            success_url:`${process.env.CLIENT_URL}/`,
+            cancel_url:`${process.env.CLIENT_URL}/pricing`
+
         })
+
+        return res.status(200).json({
+            sessionUrl:session.url
+        })
+
+
     } catch (error) {
-        
+        return res.status(500).json({message:`billing error: ${error}`})
     }
 }
