@@ -5,6 +5,7 @@ import { motion } from "motion/react"
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 import { serverUrl } from '../App'
+import { useState } from 'react'
 const plans = [
   {
     key: "free",
@@ -66,6 +67,7 @@ const plans = [
 function Pricing() {
   const navigate = useNavigate()
   const {userData}=useSelector(state=>state.user)
+  const [loading,setLoading]=useState(false)
   const handleBuy=async (planKey) => {
     if(!userData){
       navigate("/")
@@ -75,11 +77,13 @@ if(planKey=="free"){
   navigate("/dashboard")
   return
 }
+setLoading(true)
 try {
   const result=await axios.post(`${serverUrl}/api/billing`,{planType:planKey},{withCredentials:true})
-  window.location.href(result.data.sessionUrl)
+  window.location.href=result.data.sessionUrl
 } catch (error) {
   console.log(error)
+  setLoading(false)
 }
 
   }
@@ -148,13 +152,16 @@ try {
 
             <motion.button
             whileTap={{scale:0.96}}
+            disabled={loading}
+            onClick={()=>handleBuy(p.key)}
             className={`w-full py-3 rounded-xl font-semibold transition mt-auto
               ${p.popular
                 ? "bg-indigo-500 hover:bg-indigo-600"
                 : "bg-white/10 hover:bg-white/20"
               } disabled:opacity-60`}
             >
-{p.button}
+              {loading===p.key ? "Redirecting...": p.button}
+
             </motion.button>
 
 

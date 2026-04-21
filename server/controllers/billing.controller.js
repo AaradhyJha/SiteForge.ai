@@ -3,9 +3,9 @@ import stripe from "../config/stripe.js"
 
 export const billing=async (req,res) => {
     try {
-        const {plantType}=req.body
+        const {planType}=req.body
         const userId=req.user._id
-        const plan=PLANS[plantType]
+        const plan=PLANS[planType]
         if(!plan || plan.price==0){
             return res.status(400).json({message:"invalid paid plan"})
         }
@@ -17,7 +17,7 @@ export const billing=async (req,res) => {
                     price_data:{
                         currency:"inr",
                         product_data:{
-                            name:`SiteForge.ai ${plantType.toUpperCase()} plan`
+                            name:`SiteForge.ai ${planType.toUpperCase()} plan`
                         },
                         unit_amount:plan.price*100
                     },
@@ -26,7 +26,7 @@ export const billing=async (req,res) => {
             ],
 
             metadata:{
-                userId,
+                userId:userId.toString(),
                 credits:plan.credits,
                 plan:plan.plan
             },
