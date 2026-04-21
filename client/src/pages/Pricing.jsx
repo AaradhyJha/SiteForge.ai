@@ -2,7 +2,9 @@ import React from 'react'
 import { ArrowLeft, Check, Coins } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from "motion/react"
-
+import { useSelector } from 'react-redux'
+import axios from 'axios'
+import { serverUrl } from '../App'
 const plans = [
   {
     key: "free",
@@ -63,6 +65,24 @@ const plans = [
 
 function Pricing() {
   const navigate = useNavigate()
+  const {userData}=useSelector(state=>state.user)
+  const handleBuy=async (planKey) => {
+    if(!userData){
+      navigate("/")
+      return
+    }
+if(planKey=="free"){
+  navigate("/dashboard")
+  return
+}
+try {
+  const result=await axios.post(`${serverUrl}/api/billing`,{planType:planKey},{withCredentials:true})
+  window.location.href(result.data.sessionUrl)
+} catch (error) {
+  console.log(error)
+}
+
+  }
   return (
     <div className='relative min-h-screen overflow-hidden bg-[#050505] text-white px-6 pt-16 pb-24'>
 
