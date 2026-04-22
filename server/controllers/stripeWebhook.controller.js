@@ -1,5 +1,5 @@
-import stripe from "../config/stripe";
-import User from "../models/user.model";
+import stripe from "../config/stripe.js";
+import User from "../models/user.model.js";
 
 export const stripeWebhook=async (req,res) => {
     const sig=req.header["stripe-signature"]
@@ -21,8 +21,13 @@ export const stripeWebhook=async (req,res) => {
         const credits=Number(session.metadata.credits)
         const plan=session.metadata.plan
 
-        await User.findByIdAndUpdate(userId,)
+        await User.findByIdAndUpdate(userId,{
+            $inc:{credits},
+            plan
+        })
     }
+
+    return res.json({received:true})
 
 
 }
