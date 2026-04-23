@@ -2,7 +2,7 @@ import stripe from "../config/stripe.js";
 import User from "../models/user.model.js";
 
 export const stripeWebhook=async (req,res) => {
-    const sig=req.header["stripe-signature"]
+    const sig=req.headers["stripe-signature"]
     let event;
     try {
         event=stripe.webhooks.constructEvent(
