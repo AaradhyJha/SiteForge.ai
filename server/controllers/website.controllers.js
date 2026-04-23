@@ -356,8 +356,7 @@ export const deploy = async (req, res) => {
 export const getWebsiteBySlug = async (req, res) => {
   try {
     const website = await Website.findOne({
-      slug: req.params.slug,
-      user: req.user._id
+      slug: req.params.slug
     })
 
     if (!website) {
