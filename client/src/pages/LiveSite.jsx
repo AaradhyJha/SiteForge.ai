@@ -13,7 +13,7 @@ function LiveSite() {
         console.log("serverUrl:", serverUrl)
         const handleGetWebsite = async () => {
             try {
-                const result = await axios.get(`${serverUrl}/api/website/get-by-slug/${id}`, { withCredentials: true })
+                const result = await axios.get(`${serverUrl}/api/website/get-by-slug/${id}`)
                 setHtml(result.data.latestCode)
             } catch (error) {
                 console.log(error)
